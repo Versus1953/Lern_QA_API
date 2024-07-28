@@ -1,6 +1,9 @@
 import json
 from requests import Response
 import requests
+from datetime import datetime
+import random
+import string
 
 
 class BaseCase:
@@ -20,3 +23,35 @@ class BaseCase:
         
         assert name in response_as_dict, f"Response JSON doesn't have key '{name}'"
         return response_as_dict[name]
+    
+    def prepare_registration_data(self, email=None, username=None, firstName=None, lastName=None, password=None):
+        if email is None:
+            basepart = "learnqa"
+            domain = "example.com"
+            random_part = datetime.now().strftime("%m%d%Y%H%M%S")
+            email = f"{basepart}{random_part}@{domain}"
+        
+        if username is None:
+            username = 'learnqa'
+        
+        if firstName is None:
+            firstName = 'learnqa'
+        
+        if lastName is None:
+            lastName = 'learnqa'
+        
+        if password is None:
+            password = '123'
+
+        # if email is None:
+        #     random_part = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
+        #     email = f"learnqa{random_part}@example.com"
+            
+        return {
+            'password': password,
+            'username': username,
+            'firstName': firstName,
+            'lastName': lastName,
+            'email': email
+        }
+    
